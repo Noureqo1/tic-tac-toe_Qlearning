@@ -36,7 +36,7 @@ def demonstrate_game(agent, game_number):
         if action is None:
             break
         
-        # Display Q-values and decision process
+
         print(f"\nStep {step + 1}:")
         print("\nAvailable Actions and their Q-values:")
         q_values = {a: agent.q_table[state][a] for a in valid_actions}
@@ -76,19 +76,19 @@ def train_agent(episodes=10000):
     env = TicTacToeEnv()
     agent = QLearningAgent()
     
-    # Training metrics
+
     win_rates = []
     rewards_history = []
     evaluation_interval = 100
     
-    # Store agents for demonstration
+
     first_game_agent = None
     
     for episode in tqdm(range(episodes)):
         state = env.reset()
         total_reward = 0
         
-        # Save agent state after first game
+
         if episode == 0:
             first_game_agent = deepcopy(agent)
         
@@ -102,7 +102,7 @@ def train_agent(episodes=10000):
             next_state, reward, done = env.make_move(action)
             next_valid_actions = env.get_valid_actions()
             
-            # Update Q-values
+
             agent.learn(state, action, reward, next_state, next_valid_actions)
             
             total_reward += reward
@@ -114,7 +114,7 @@ def train_agent(episodes=10000):
         rewards_history.append(total_reward)
         agent.decay_epsilon()
         
-        # Evaluate agent periodically
+
         if (episode + 1) % evaluation_interval == 0:
             win_rate = evaluate_agent(agent)
             win_rates.append(win_rate)
@@ -137,7 +137,7 @@ def evaluate_agent(agent, n_games=100):
             state, reward, done = env.make_move(action)
             
             if done:
-                if reward == 1:  # Win
+                if reward == 1:  
                     wins += 1
                 break
                 
@@ -162,25 +162,25 @@ def plot_training_results(win_rates, rewards_history):
     plt.close()
 
 if __name__ == "__main__":
-    # Train the agent
+
     print("Training agent...")
     final_agent, first_game_agent, win_rates, rewards_history = train_agent()
     
-    # Plot results
+
     plot_training_results(win_rates, rewards_history)
     
-    # Show example games
+
     print("\nDemonstrating first game (untrained agent):")
     demonstrate_game(first_game_agent, 1)
     
     print("\nDemonstrating final game (trained agent):")
     demonstrate_game(final_agent, 2)
     
-    # Final evaluation
+
     final_win_rate = evaluate_agent(final_agent, n_games=1000)
     print(f"\nFinal Win Rate: {final_win_rate:.2%}")
     
-    # Save example game
+
     print("\nExample game:")
     env = TicTacToeEnv()
     state = env.reset()

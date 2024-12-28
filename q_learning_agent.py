@@ -13,14 +13,14 @@ class QLearningAgent:
         if not valid_actions:
             return None
             
-        # Epsilon-greedy action selection
+ 
         if random.random() < self.epsilon:
             return random.choice(valid_actions)
             
-        # Get Q-values for all valid actions
+
         q_values = [self.q_table[state][action] for action in valid_actions]
         max_q = max(q_values)
-        # If multiple actions have the same max Q-value, randomly select one
+
         best_actions = [action for action, q in zip(valid_actions, q_values) if q == max_q]
         return random.choice(best_actions)
         
@@ -31,7 +31,7 @@ class QLearningAgent:
             max_next_q = max(self.q_table[next_state][next_action] 
                            for next_action in next_valid_actions)
             
-        # Q-learning update rule
+
         current_q = self.q_table[state][action]
         self.q_table[state][action] = current_q + self.lr * (
             reward + self.gamma * max_next_q - current_q)
